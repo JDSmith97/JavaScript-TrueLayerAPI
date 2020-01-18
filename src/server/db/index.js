@@ -1,17 +1,19 @@
 const mysql = require("mysql");
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "test",
-  database: "truelayer"
+  database: "truelayer",
+  connectionLimit: 10
 });
 
-connection.connect(function(err) {
-  if (err) {
-    console.error("error connecting: " + err.stack);
-    return;
-  }
+const getConnection = function(callback) {
+  pool.getConnection(function(err, connection) {
+    callback(err, connection);
+  });
+};
 
-  console.log("connected as id " + connection.threadId);
-});
+module.exports = {
+  getConnection
+};

@@ -34,6 +34,5 @@ const getAccounts = async function(tokens) {
 
 module.exports = {
   handleAuthURL,
-  getToken,
-  getAccounts
+  getToken
 };

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server/index.js",
-    "testDB": "node src/server/db/index.js"
+    "testDB": "node src/server/db/accounts/index.js"
   },
   "repository": {
     "type": "git",
