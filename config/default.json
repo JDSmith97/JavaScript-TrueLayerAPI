@@ -1,0 +1,19 @@
+{
+  "Config": {
+    "port": "3000",
+    "redirect_uri": "http://localhost:3000/redirect",
+    "trueLayer": {
+      "client_id": "jdsmith97-905d71",
+      "client_secret": "ea126205-ace8-42bc-b8a5-26fdd86e8331",
+      "scopes": [
+        "info",
+        "accounts",
+        "balance",
+        "transactions",
+        "offline_access",
+        "cards"
+      ],
+      "providerId": "uk-cs-mock"
+    }
+  }
+}
