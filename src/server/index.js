@@ -4,6 +4,7 @@ const app = require("express")();
 const authHandler = require("./auth");
 const userHandler = require("./user");
 const accountHandler = require("./db/accounts");
+const transactionHandler = require("./db/transactions");
 
 const config = require("config").get("Config");
 
@@ -13,13 +14,13 @@ app.get("/", async (req, res) => {
 
 app.get("/redirect", async (req, res) => {
   const tokens = await authHandler.getToken(req, res);
-  const info = await userHandler.getAccounts(tokens);
-  const transactions = await userHandler.getTransactions(tokens, info);
+  const accounts = await userHandler.getAccounts(tokens);
 
-  await accountHandler.insertAccounts(info);
+  await accountHandler.insertAccounts(accounts);
+  await userHandler.getAccountID(tokens, accounts);
 
   res.set("Content-Type", "text/plain");
-  res.send("Info: " + JSON.stringify(info, null, 2));
+  res.send("Info: " + JSON.stringify(accounts, null, 2));
 });
 
 app.listen(config.port, () =>

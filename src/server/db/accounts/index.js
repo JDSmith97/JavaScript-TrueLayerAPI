@@ -1,6 +1,8 @@
 const mysql = require("mysql");
+const fs = require('fs');
 
 const db = require("./..");
+var accountSQL = fs.readFileSync(__dirname + '/sql/createAccount.sql').toString();
 
 var accountValues = [];
 
@@ -12,25 +14,22 @@ const insertAccounts = async function(accounts) {
     }
     console.log("Connected as id " + conn.threadId);
 
-    accounts.results.forEach(obj => {
+    accounts.results.forEach(account => {
       accountValues = {
-        update_timestamp: obj.update_timestamp,
-        account_id: obj.account_id,
-        account_type: obj.account_type,
-        display_name: obj.display_name,
-        currency: obj.currency,
-        account_swift_no: obj.account_number.swift_bic,
-        account_no: obj.account_number.number,
-        account_sort_code: obj.account_number.sort_code,
-        provider_name: obj.provider.display_name,
-        provider_id: obj.provider.provider_id
+        update_timestamp: account.update_timestamp,
+        account_id: account.account_id,
+        account_type: account.account_type,
+        display_name: account.display_name,
+        currency: account.currency,
+        account_swift_no: account.account_number.swift_bic,
+        account_no: account.account_number.number,
+        account_sort_code: account.account_number.sort_code,
+        provider_name: account.provider.display_name,
+        provider_id: account.provider.provider_id
       };
 
-      conn.query("INSERT INTO `accounts` SET ?", accountValues, function(
-        err,
-        result
-      ) {
-        if (error) throw error;
+      conn.query(accountSQL, [accountValues, accountValues], function(err, result) {
+        if (err) throw err;
       });
       accountValues = [];
     });

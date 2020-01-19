@@ -27,11 +27,6 @@ const getToken = async function(req, res) {
   };
 };
 
-const getAccounts = async function(tokens) {
-  const info = await DataAPIClient.getAccounts(tokens.accessToken);
-  return info;
-};
-
 module.exports = {
   handleAuthURL,
   getToken
