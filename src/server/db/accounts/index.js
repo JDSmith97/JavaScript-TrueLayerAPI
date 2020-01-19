@@ -6,16 +6,16 @@ var accountSQL = fs.readFileSync(__dirname + '/sql/createAccount.sql').toString(
 
 var accountValues = [];
 
-const insertAccounts = async function(accounts) {
+const insertAccounts = async function(accounts, userId) {
   db.getConnection(function(err, conn) {
     if (err) {
       console.error("Error connecting: " + err.stack);
       return;
     }
-    console.log("Connected as id " + conn.threadId);
 
     accounts.results.forEach(account => {
       accountValues = {
+        user_id: userId,
         update_timestamp: account.update_timestamp,
         account_id: account.account_id,
         account_type: account.account_type,

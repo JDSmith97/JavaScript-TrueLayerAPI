@@ -7,7 +7,7 @@ var transactionSQL = fs.readFileSync(__dirname + '/sql/insertTransaction.sql').t
 
 var transactionValues = [];
 
-const insertTransactions = async function(transactions, accountNumber) {
+const insertTransactions = async function(transactions, accountNumber, userId) {
   db.getConnection(function(err, conn) {
     if (err) {
       console.error("Error connecting: " + err.stack);
@@ -23,6 +23,7 @@ const insertTransactions = async function(transactions, accountNumber) {
 
     transactions.results.forEach(transaction => {
       transactionValues = {
+        user_id: userId,
         timestamp: transaction.timestamp,
         description: transaction.description,
         transaction_type: transaction.transaction_type,
@@ -33,7 +34,7 @@ const insertTransactions = async function(transactions, accountNumber) {
         transaction_id: transaction.transaction_id,
         balance_currency: transaction.running_balance.currency,
         balance_amount: transaction.running_balance.amount,
-        provider_transaction_category: transaction.meta.provider_transaction_category
+        provider_transaction_category: transaction.meta.provider_transaction_category,
       };
 
       var insertTransaction = mysql.format(transactionSQL, accountNumber);
