@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const db = require("./../../../db");
+const db = require("../../../truelayer/db");
 var getUsersAccountsSQL = fs.readFileSync(__dirname + '/sql/getUserAccounts.sql').toString();
 
 const userAccounts = async function(userId) {

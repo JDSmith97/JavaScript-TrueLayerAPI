@@ -1,10 +1,8 @@
-const { AuthAPIClient, DataAPIClient } = require("truelayer-client");
 const bodyParser = require("body-parser");
 const app = require("express")();
 
-const authHandler = require("./auth");
-const userHandler = require("./user");
-const accountHandler = require("./db/accounts");
+const truelayerAPI = require("./truelayer/index");
+const authHandler = require("./truelayer/auth");
 const apiHandler = require("./api/index");
 
 const config = require("config").get("Config");
@@ -18,18 +16,10 @@ app.get("/", async (req, res) => {
 
 app.get("/redirect", async (req, res) => {
 
-  const tokens = await authHandler.getToken(req, res);
-  const userData = await DataAPIClient.getInfo(tokens.accessToken);
-  const accounts = await userHandler.getAccounts(tokens);
-  
-  const userId = await userHandler.getUserInfo(tokens);
-
-  console.log(userId)
-  await accountHandler.insertAccounts(accounts, userId);
-  await userHandler.getAccountID(tokens, accounts, userId);
+  await truelayerAPI.runAPIs(req,res);
 
   res.set("Content-Type", "text/plain");
-  res.send("Info: " + JSON.stringify(userData, null, 2));
+  res.send("Account synced");
 });
 
 app.get("/api/get-transactions", async (req, res) => {
@@ -41,7 +31,6 @@ app.get("/api/get-transactions", async (req, res) => {
   }
   const transactions = await apiHandler.getTransactions(req.query.userId);
 
-  // console.log(transactions);
   res.status(200).send({
     success: 'true',
     message: 'Transactions retrieved successfully',

@@ -1,4 +1,4 @@
-const { AuthAPIClient, DataAPIClient } = require("truelayer-client");
+const { AuthAPIClient } = require("truelayer-client");
 const config = require("config").get("Config");
 
 const authClient = new AuthAPIClient({

@@ -1,4 +1,4 @@
-const { DataAPIClient } = require("truelayer-client");
+const { DataAPIClient, API } = require("truelayer-client");
 const userDBHandler = require("./../db/user");
 const transactionDBHandler = require("./../db/transactions");
 
@@ -6,13 +6,14 @@ const getUserInfo = async function(tokens) {
   const userInfo = await DataAPIClient.getInfo(tokens.accessToken);
 
   const userId = await userDBHandler.checkUserId(userInfo);
-  console.log('test',userId);
   return userId;
 }
 
 const getAccounts = async function(tokens) {
-  const accounts = await DataAPIClient.getAccounts(tokens.accessToken);
-  return accounts;
+  return new Promise(async (resolve, reject) => {
+    const accounts = await DataAPIClient.getAccounts(tokens.accessToken);
+    resolve(accounts);
+  })
 };
 
 const getAccountID = function(tokens, accounts, userId) {

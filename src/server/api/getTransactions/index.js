@@ -2,7 +2,7 @@ const fs = require('fs');
 const mysql = require('mysql');
 
 const getUserAccounts =  require("./getUserAccounts");
-const db = require("./../../db");
+const db = require("../../truelayer/db");
 var getAccountTableSQL = fs.readFileSync(__dirname + '/sql/getAccountTable.sql').toString();
 
 const getTransactions = async function(userId){

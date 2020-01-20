@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const fs = require('fs');
 
-const db = require("./..");
+const db = require("..");
 var tableSQL = fs.readFileSync(__dirname + '/sql/createTable.sql').toString();
 var transactionSQL = fs.readFileSync(__dirname + '/sql/insertTransaction.sql').toString();
 
