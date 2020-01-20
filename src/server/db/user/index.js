@@ -1,5 +1,3 @@
-const { DataAPIClient } = require("truelayer-client");
-const mysql = require("mysql");
 const { uuid }  = require("uuidv4");
 const fs = require('fs');
 
@@ -22,7 +20,6 @@ const checkUserId = async function(userInfo) {
             resolve(userId);
         })
     })
-    
 }
 
 const queryDB = async function(conn, userEmail, userInfo){
@@ -30,7 +27,7 @@ const queryDB = async function(conn, userEmail, userInfo){
     return new Promise((resolve) => {
         conn.query(checkUserSQL, userEmail, function( err, result ) {
             if (err) {
-               reject(err);
+               resolve(err);
             }
     
             if(!result.length){
@@ -39,7 +36,7 @@ const queryDB = async function(conn, userEmail, userInfo){
                     name: userInfo.results[0].full_name,
                     email: userEmail
                 }
-                conn.query(addUserSQL, userDetails, function( err, result ) {
+                conn.query(addUserSQL, userDetails, function( err ) {
                     if (err) throw err;
                 });
                 userId = userDetails.user_id;

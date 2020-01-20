@@ -1,0 +1,1 @@
+SELECT account_id from `accounts` WHERE `user_id` = ?
