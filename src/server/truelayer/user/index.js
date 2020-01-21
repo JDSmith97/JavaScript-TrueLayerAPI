@@ -7,11 +7,11 @@ const transactionDBHandler = require("./../db/transactions");
 const getUserInfo = async function(tokens) {
   let startTime, endTime;
 
-  startTime = moment().milliseconds();
+  startTime = moment().format('x');
   const userInfo = await DataAPIClient.getInfo(tokens.access_token);
   
   const userId = await userDBHandler.checkUserId(userInfo);
-  endTime = moment().milliseconds();
+  endTime = moment().format('x');
   const timeDiff = endTime - startTime;
   
   return({
@@ -23,11 +23,10 @@ const getUserInfo = async function(tokens) {
 const getAccounts = async function(tokens) {
 
   return new Promise(async (resolve, reject) => {
-    startTime = moment().milliseconds();
+    startTime = moment().format('x');
     const accounts = await DataAPIClient.getAccounts(tokens.access_token);
-    endTime = moment().milliseconds();
+    endTime = moment().format('x');
     const timeDiff = endTime - startTime;
-
     resolve({
       accounts: accounts,
       exec: timeDiff
@@ -36,7 +35,7 @@ const getAccounts = async function(tokens) {
 };
 
 const getAccountID = function(tokens, accounts, userId) {
-  startTime = moment().milliseconds();
+  startTime = moment().format('x');
   accounts.results.forEach(async account => {
     const transactions = await DataAPIClient.getTransactions(
       tokens.access_token,
@@ -48,7 +47,7 @@ const getAccountID = function(tokens, accounts, userId) {
       userId
     );
   });
-  endTime = moment().milliseconds();
+  endTime = moment().format('x');
   const timeDiff = endTime - startTime;
   return(timeDiff);
 };
