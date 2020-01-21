@@ -46,6 +46,7 @@ const queryDB = async function(conn, userEmail, userInfo){
                 resolve(userId);
             }
         });
+        conn.release();
     })
 }
 

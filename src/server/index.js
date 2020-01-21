@@ -44,11 +44,8 @@ app.get("/api/get-transactions", async (req, res) => {
 })
 
 app.get("/api/get-transactions-debug", async (req, res) => {
-
   const tokens = await keyHandler.getKeys();
   const api = await truelayerAPI.runAPIs(tokens, true);
-
-  console.log(api);
 
   res.status(200).send({
     success: 'true',

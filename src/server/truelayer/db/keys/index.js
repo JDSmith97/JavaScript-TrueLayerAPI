@@ -26,6 +26,7 @@ const insertKeys = async function(accountToken, refreshToken) {
     conn.query(insertKeySQL, keyValues, function(err, result) {
         if (err) throw err;
     });
+    conn.release();
   });
 };
 
@@ -36,7 +37,6 @@ const getKeys = async function() {
                 console.error("Error connecting: " + err.stack);
                 resolve(err);
             }
-
             conn.query(getKeySQL, function(err, result) {
                 if (err) {
                     resolve(err);
@@ -44,7 +44,9 @@ const getKeys = async function() {
                 const token = result[0];
                 resolve(token);
             });
+            conn.release();
         });
+        
     });    
 };
 

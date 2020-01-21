@@ -43,10 +43,10 @@ const insertTransactions = async function(transactions, accountNumber, userId) {
       conn.query(insertTransaction, [transactionValues, transactionValues], function(err, result) {
         if (err) throw err;
       });
-
       transactionValues = [];
     });
-    console.log(accountNumber, " transactions inserted")
+    conn.release();
+    console.log(accountNumber, " Transactions inserted")
   });
 };
 

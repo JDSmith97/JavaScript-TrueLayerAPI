@@ -25,6 +25,7 @@ const queryDB = async function(conn, sql, userId){
     
             resolve(result);
         });
+        conn.release();
     })
 }
 

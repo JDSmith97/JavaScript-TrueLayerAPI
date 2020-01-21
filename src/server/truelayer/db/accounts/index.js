@@ -33,6 +33,7 @@ const insertAccounts = async function(accounts, userId) {
       });
       accountValues = [];
     });
+    conn.release();
   });
 };
 

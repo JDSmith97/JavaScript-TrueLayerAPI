@@ -1,8 +1,6 @@
 const userHandler = require("./user");
 const accountHandler = require("./db/accounts");
 
-
-
 const runAPIs = function(tokens, debug){
     return new Promise(async (resolve, reject) => {
         try {

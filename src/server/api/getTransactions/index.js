@@ -14,23 +14,24 @@ const getTransactions = async function(userId){
             if (err) {
               reject(err);
             }
-                accounts.forEach(async account => {
+            accounts.forEach(async account => {
 
-                    var getAccountSQL = mysql.format(getAccountTableSQL, account.account_id);
-                    getAccountSQL = getAccountSQL.replace(/["']/g, "");
+                var getAccountSQL = mysql.format(getAccountTableSQL, account.account_id);
+                getAccountSQL = getAccountSQL.replace(/["']/g, "");
 
-                    const transactions = await dbQuery(getAccountSQL, account.account_id, userId, conn);
+                const transactions = await dbQuery(getAccountSQL, account.account_id, userId, conn);
 
-                    var accountTransactions = {
-                        ['Account: ' + account.account_id] : {
-                            transactions
-                        }
+                var accountTransactions = {
+                    ['Account: ' + account.account_id] : {
+                        transactions
                     }
-                    userTransactions.push(accountTransactions);
-                    if(userTransactions.length  === accounts.length) {
-                        resolve(userTransactions);
-                    }
-                });            
+                }
+                userTransactions.push(accountTransactions);
+                if(userTransactions.length  === accounts.length) {
+                    resolve(userTransactions);
+                }
+            }); 
+            conn.release();           
         });
     });
 };
