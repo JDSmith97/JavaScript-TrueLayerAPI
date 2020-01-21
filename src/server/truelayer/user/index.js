@@ -3,7 +3,7 @@ const userDBHandler = require("./../db/user");
 const transactionDBHandler = require("./../db/transactions");
 
 const getUserInfo = async function(tokens) {
-  const userInfo = await DataAPIClient.getInfo(tokens.accessToken);
+  const userInfo = await DataAPIClient.getInfo(tokens.access_token);
 
   const userId = await userDBHandler.checkUserId(userInfo);
   return userId;
@@ -11,7 +11,7 @@ const getUserInfo = async function(tokens) {
 
 const getAccounts = async function(tokens) {
   return new Promise(async (resolve, reject) => {
-    const accounts = await DataAPIClient.getAccounts(tokens.accessToken);
+    const accounts = await DataAPIClient.getAccounts(tokens.access_token);
     resolve(accounts);
   })
 };
@@ -19,7 +19,7 @@ const getAccounts = async function(tokens) {
 const getAccountID = function(tokens, accounts, userId) {
   accounts.results.forEach(async account => {
     const transactions = await DataAPIClient.getTransactions(
-      tokens.accessToken,
+      tokens.access_token,
       account.account_id
     );
     await transactionDBHandler.insertTransactions(
@@ -32,7 +32,7 @@ const getAccountID = function(tokens, accounts, userId) {
 
 const getTransactions = async function(tokens, account) {
   const transactions = await DataAPIClient.getTransactions(
-    tokens.accessToken,
+    tokens.access_token,
     account
   );
   return transactions;

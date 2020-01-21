@@ -1,7 +1,7 @@
 const { uuid }  = require("uuidv4");
 const fs = require('fs');
 
-const db = require("./..");
+const db = require("..");
 var checkUserSQL = fs.readFileSync(__dirname + '/sql/checkUser.sql').toString();
 var addUserSQL = fs.readFileSync(__dirname + '/sql/addUser.sql').toString();
 

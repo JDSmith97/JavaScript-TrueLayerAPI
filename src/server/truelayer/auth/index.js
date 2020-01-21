@@ -1,6 +1,8 @@
 const { AuthAPIClient } = require("truelayer-client");
 const config = require("config").get("Config");
 
+const keyHandler = require("./../db/keys/index");
+
 const authClient = new AuthAPIClient({
   client_id: config.trueLayer.client_id,
   client_secret: config.trueLayer.client_secret
@@ -16,18 +18,26 @@ const handleAuthURL = async function(req, res) {
   return res.redirect(authURL);
 };
 
-const getToken = async function(req, res) {
+const recieveToken = async function(req, res) {
   const tokens = await authClient.exchangeCodeForToken(
     config.redirect_uri,
     req.query.code
   );
-  return {
-    accessToken: tokens.access_token,
-    refreshToken: tokens.refresh_token
-  };
+  await insertTokens(tokens.access_token, tokens.refresh_token);
+  return tokens;
 };
+
+const insertTokens = async function(accessToken, refreshToken){
+  await keyHandler.insertKeys(accessToken, refreshToken);
+}
+
+const getTokens = async function() {
+  const tokens = await keyHandler.getKeys();
+  return tokens;
+}
 
 module.exports = {
   handleAuthURL,
-  getToken
+  recieveToken,
+  getTokens
 };

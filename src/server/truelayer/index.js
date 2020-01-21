@@ -1,17 +1,26 @@
 const { DataAPIClient } = require("truelayer-client");
 
-const authHandler =  require("./auth");
 const userHandler = require("./user");
 const accountHandler = require("./db/accounts");
 
-const runAPIs = async function(req, res){
-  const tokens = await authHandler.getToken(req, res);
-  const userData = await DataAPIClient.getInfo(tokens.accessToken);
-  const accounts = await userHandler.getAccounts(tokens);
-  const userId = await userHandler.getUserInfo(tokens);
+const runAPIs = function(tokens){
+    return new Promise(async (resolve, reject) => {
+        try {
 
-  await accountHandler.insertAccounts(accounts, userId);
-  await userHandler.getAccountID(tokens, accounts, userId);
+            console.log(tokens);
+            const accounts = await userHandler.getAccounts(tokens);
+            const userId = await userHandler.getUserInfo(tokens);
+          
+            await accountHandler.insertAccounts(accounts, userId);
+            await userHandler.getAccountID(tokens, accounts, userId);
+            resolve();
+        }
+        catch(error) {
+            console.error('Error',error.error);
+            resolve(error.error);
+        }
+    })
+
 }
 
 module.exports = {
