@@ -19,7 +19,7 @@ app.get("/", async (req, res) => {
 app.get("/redirect", async (req, res) => {
 
   const tokens = await authHandler.recieveToken(req, res);
-  const api = await truelayerAPI.runAPIs(tokens);
+  const api = await truelayerAPI.runAPIs(tokens, false);
 
   if(!api){
     return res.status(200).send("Accounts synced")
@@ -46,13 +46,14 @@ app.get("/api/get-transactions", async (req, res) => {
 app.get("/api/get-transactions-debug", async (req, res) => {
 
   const tokens = await keyHandler.getKeys();
-  console.log(tokens)
-  const transactions = await apiHandler.getTransactions(tokens);
+  const api = await truelayerAPI.runAPIs(tokens, true);
+
+  console.log(api);
 
   res.status(200).send({
     success: 'true',
     message: 'Transactions retrieved successfully',
-    transactions: transactions
+    execTimes: api
   })
 })
 

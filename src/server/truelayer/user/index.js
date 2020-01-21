@@ -1,22 +1,42 @@
-const { DataAPIClient, API } = require("truelayer-client");
+const { DataAPIClient } = require("truelayer-client");
+const moment = require("moment");
+
 const userDBHandler = require("./../db/user");
 const transactionDBHandler = require("./../db/transactions");
 
 const getUserInfo = async function(tokens) {
-  const userInfo = await DataAPIClient.getInfo(tokens.access_token);
+  let startTime, endTime;
 
+  startTime = moment().milliseconds();
+  const userInfo = await DataAPIClient.getInfo(tokens.access_token);
+  
   const userId = await userDBHandler.checkUserId(userInfo);
-  return userId;
+  endTime = moment().milliseconds();
+  const timeDiff = endTime - startTime;
+  
+  return({
+    userId: userId,
+    exec: timeDiff
+  }); 
 }
 
 const getAccounts = async function(tokens) {
+
   return new Promise(async (resolve, reject) => {
+    startTime = moment().milliseconds();
     const accounts = await DataAPIClient.getAccounts(tokens.access_token);
-    resolve(accounts);
+    endTime = moment().milliseconds();
+    const timeDiff = endTime - startTime;
+
+    resolve({
+      accounts: accounts,
+      exec: timeDiff
+    });
   })
 };
 
 const getAccountID = function(tokens, accounts, userId) {
+  startTime = moment().milliseconds();
   accounts.results.forEach(async account => {
     const transactions = await DataAPIClient.getTransactions(
       tokens.access_token,
@@ -28,6 +48,9 @@ const getAccountID = function(tokens, accounts, userId) {
       userId
     );
   });
+  endTime = moment().milliseconds();
+  const timeDiff = endTime - startTime;
+  return(timeDiff);
 };
 
 const getTransactions = async function(tokens, account) {
