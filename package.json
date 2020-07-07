@@ -24,7 +24,7 @@
     "fs": "0.0.1-security",
     "moment": "^2.24.0",
     "mysql": "^2.17.1",
-    "npm": "^6.13.6",
+    "npm": "^6.14.6",
     "truelayer-client": "^1.3.2",
     "uuidv4": "^6.0.1"
   }
